@@ -1,4 +1,8 @@
 *.rar
 *.docx
+*.zip
 bin
 temp
+obj
+Properties
+*.Development.json

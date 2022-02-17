@@ -6,3 +6,4 @@ temp
 obj
 Properties
 *.Development.json
+.vscode

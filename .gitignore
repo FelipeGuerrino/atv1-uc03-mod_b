@@ -5,5 +5,7 @@ bin
 temp
 obj
 Properties
-*.Development.json
 .vscode
+
+atividade1
+conteudos

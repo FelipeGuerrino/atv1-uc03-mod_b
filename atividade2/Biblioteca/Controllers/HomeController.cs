@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Biblioteca.Models;
@@ -35,13 +36,19 @@ namespace Biblioteca.Controllers
         {
             UsuarioService us = new UsuarioService();
 
+            using (MD5 md5Hash = MD5.Create())
+                {
+                    string hash = us.Encriptar(md5Hash, senha);
+                    senha = hash;
+                }
             if(login != null && senha != null)
             {
-                var u = us.ObterUsuario(login, senha);
-                
+                Usuario u =  new Usuario();
+                u = us.ObterUsuario(login, senha);
+                                
                 if(u != null)
                 {
-                    HttpContext.Session.SetString("user", "admin");
+                    HttpContext.Session.SetString("user", login);
                     return RedirectToAction("Index");
                 }
                 else

@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Biblioteca.Models
 {
@@ -11,6 +13,8 @@ namespace Biblioteca.Models
             using(BibliotecaContext bc = new BibliotecaContext())
             {
                 bc.Usuarios.Add(u);
+
+
                 bc.SaveChanges();
             }
         }
@@ -53,6 +57,20 @@ namespace Biblioteca.Models
             {
                 return bc.Usuarios.FirstOrDefault(u => u.Nome == nome && u.Senha == senha);
             }
+        }
+
+        public string Encriptar(MD5 md5Hash, string senha)
+        {
+            byte[] dado = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(senha));
+
+            StringBuilder sBuilder = new StringBuilder();
+
+            for (int i = 0; i < dado.Length; i++)
+            {
+                sBuilder.Append(dado[i].ToString("x2"));
+            }
+
+            return sBuilder.ToString();
         }
     }
 }

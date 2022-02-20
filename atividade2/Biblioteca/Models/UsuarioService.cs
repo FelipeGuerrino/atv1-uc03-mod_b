@@ -46,5 +46,13 @@ namespace Biblioteca.Models
                 return bc.Usuarios.Find(id);
             }
         }
+
+        public Usuario ObterUsuario(string nome, string senha)
+        {
+            using(BibliotecaContext bc = new BibliotecaContext())
+            {
+                return bc.Usuarios.FirstOrDefault(u => u.Nome == nome && u.Senha == senha);
+            }
+        }
     }
 }

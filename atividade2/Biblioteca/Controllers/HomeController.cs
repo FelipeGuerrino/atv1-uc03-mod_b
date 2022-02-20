@@ -33,15 +33,27 @@ namespace Biblioteca.Controllers
         [HttpPost]
         public IActionResult Login(string login, string senha)
         {
-            if(login != "admin" || senha != "123")
+            UsuarioService us = new UsuarioService();
+
+            if(login != null && senha != null)
             {
-                ViewData["Erro"] = "Senha inválida";
-                return View();
+                var u = us.ObterUsuario(login, senha);
+                
+                if(u != null)
+                {
+                    HttpContext.Session.SetString("user", "admin");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewData["Erro"] = "Senha inválida";
+                    return View();
+                }
             }
             else
             {
-                HttpContext.Session.SetString("user", "admin");
-                return RedirectToAction("Index");
+                ViewData["Erro"] = "Preencha todos os campos";
+                return View();
             }
         }
 

@@ -24,11 +24,17 @@ namespace Biblioteca.Controllers
                     string hash = usuarioService.Encriptar(md5Hash, u.Senha);
                     u.Senha = hash;
                 }
-                
+
                 usuarioService.Inserir(u);
             }
             else
             {
+                using (MD5 md5Hash = MD5.Create())
+                {
+                    string hash = usuarioService.Encriptar(md5Hash, u.Senha);
+                    u.Senha = hash;
+                }
+
                 usuarioService.Atualizar(u);
             }
 

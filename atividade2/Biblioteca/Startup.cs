@@ -25,6 +25,12 @@ namespace Biblioteca
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();
             services.AddSession();
+
+            services.AddAuthentication("CookieAuth").AddCookie("CookieAuth", config =>
+            {
+                config.Cookie.Name = "SimpleAuthNAuthZ.Cookie";
+                config.LoginPath = "/Home/Login";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

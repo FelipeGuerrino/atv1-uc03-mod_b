@@ -47,6 +47,7 @@ namespace Biblioteca.Controllers
             EmprestimoService emprestimoService = new EmprestimoService();
             int quantidadeRegistros = emprestimoService.CountEmprestimos();
             ViewData["Paginas"] = (int)Math.Ceiling((double)quantidadeRegistros / 10);
+
             return View(emprestimoService.ListarTodos(page, 10, objFiltro));
         }
 

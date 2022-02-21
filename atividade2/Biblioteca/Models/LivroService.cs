@@ -28,10 +28,12 @@ namespace Biblioteca.Models
             }
         }
 
-        public ICollection<Livro> ListarTodos(FiltrosLivros filtro = null)
+        public ICollection<Livro> ListarTodos(int page, int size, FiltrosLivros filtro = null)
         {
             using(BibliotecaContext bc = new BibliotecaContext())
             {
+                int pular = (page - 1) * size;
+
                 IQueryable<Livro> query;
                 
                 if(filtro != null)
@@ -59,7 +61,7 @@ namespace Biblioteca.Models
                 }
                 
                 //ordenação padrão
-                return query.OrderBy(l => l.Titulo).ToList();
+                return query.Skip(pular).Take(size).ToList();
             }
         }
 

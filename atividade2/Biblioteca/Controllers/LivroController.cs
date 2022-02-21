@@ -28,7 +28,7 @@ namespace Biblioteca.Controllers
             return RedirectToAction("Listagem");
         }
 
-        public IActionResult Listagem(string tipoFiltro, string filtro)
+        public IActionResult Listagem(string tipoFiltro, string filtro, int page = 1)
         {
             Autenticacao.CheckLogin(this);
             FiltrosLivros objFiltro = null;
@@ -39,7 +39,7 @@ namespace Biblioteca.Controllers
                 objFiltro.TipoFiltro = tipoFiltro;
             }
             LivroService livroService = new LivroService();
-            return View(livroService.ListarTodos(objFiltro));
+            return View(livroService.ListarTodos(page, 10, objFiltro));
         }
 
         public IActionResult Edicao(int id)

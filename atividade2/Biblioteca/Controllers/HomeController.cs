@@ -33,6 +33,7 @@ namespace Biblioteca.Controllers
 
         [HttpPost]
         public IActionResult Login(string login, string senha)
+        //TODO: diferenciar sessão de admin para outros usuários
         {
             UsuarioService us = new UsuarioService();
 

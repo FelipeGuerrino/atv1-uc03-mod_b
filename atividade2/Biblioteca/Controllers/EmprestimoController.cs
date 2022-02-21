@@ -9,13 +9,13 @@ namespace Biblioteca.Controllers
     
     public class EmprestimoController : Controller
     {
-        public IActionResult Cadastro()
+        public IActionResult Cadastro(int page = 1)
         {
             LivroService livroService = new LivroService();
             EmprestimoService emprestimoService = new EmprestimoService();
 
             CadEmprestimoViewModel cadModel = new CadEmprestimoViewModel();
-            cadModel.Livros = livroService.ListarTodos();
+            cadModel.Livros = livroService.ListarTodos(page, 10);
             return View(cadModel);
         }
 
@@ -48,14 +48,14 @@ namespace Biblioteca.Controllers
             return View(emprestimoService.ListarTodos(objFiltro));
         }
 
-        public IActionResult Edicao(int id)
+        public IActionResult Edicao(int id, int page = 1)
         {
             LivroService livroService = new LivroService();
             EmprestimoService em = new EmprestimoService();
             Emprestimo e = em.ObterPorId(id);
 
             CadEmprestimoViewModel cadModel = new CadEmprestimoViewModel();
-            cadModel.Livros = livroService.ListarTodos();
+            cadModel.Livros = livroService.ListarTodos(page, 10);
             cadModel.Emprestimo = e;
             
             return View(cadModel);

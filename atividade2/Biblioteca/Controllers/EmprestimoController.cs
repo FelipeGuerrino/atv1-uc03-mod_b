@@ -35,7 +35,7 @@ namespace Biblioteca.Controllers
             return RedirectToAction("Listagem");
         }
 
-        public IActionResult Listagem(string tipoFiltro, string filtro)
+        public IActionResult Listagem(string tipoFiltro, string filtro, int page = 1)
         {
             FiltrosEmprestimos objFiltro = null;
             if(!string.IsNullOrEmpty(filtro))
@@ -45,7 +45,9 @@ namespace Biblioteca.Controllers
                 objFiltro.TipoFiltro = tipoFiltro;
             }
             EmprestimoService emprestimoService = new EmprestimoService();
-            return View(emprestimoService.ListarTodos(objFiltro));
+            int quantidadeRegistros = emprestimoService.CountEmprestimos();
+            ViewData["Paginas"] = (int)Math.Ceiling((double)quantidadeRegistros / 10);
+            return View(emprestimoService.ListarTodos(page, 10, objFiltro));
         }
 
         public IActionResult Edicao(int id, int page = 1)

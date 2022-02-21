@@ -52,11 +52,10 @@
 <div class="container">
     <ul class="pagination">
         <li class="page-item">
-            <a href="#" class="page-link">Ant.</a>
-            <a href="#" class="page-link">1</a>
-            <a href="#" class="page-link">2</a>
-            <a href="#" class="page-link">3</a>
-            <a href="#" class="page-link">Próx.</a>
+            @for (int i = 1; i <= (int)ViewData["Paginas"]; i++)
+            {
+                <a class="page-link" href="?page=@i">@i</a>
+            }
         </li>
     </ul>
 </div>

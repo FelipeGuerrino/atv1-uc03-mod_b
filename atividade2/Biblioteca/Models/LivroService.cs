@@ -85,5 +85,13 @@ namespace Biblioteca.Models
                 return bc.Livros.Find(id);
             }
         }
+
+        public int CountLivros()
+        {
+            using(BibliotecaContext bc = new BibliotecaContext())
+            {
+                return bc.Livros.Count();
+            }
+        }
     }
 }

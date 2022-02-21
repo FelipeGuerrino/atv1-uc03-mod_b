@@ -30,11 +30,12 @@ namespace Biblioteca.Models
             }
         }
 
-        public ICollection<Emprestimo> ListarTodos(FiltrosEmprestimos filtro)
+        public ICollection<Emprestimo> ListarTodos(int page, int size, FiltrosEmprestimos filtro)
         {
+            int pular = (page - 1) * size;
             using(BibliotecaContext bc = new BibliotecaContext())
             {
-                return bc.Emprestimos.Include(e => e.Livro).ToList();
+                return bc.Emprestimos.Include(e => e.Livro).Skip(pular).Take(size).ToList();
             }
         }
 
@@ -43,6 +44,14 @@ namespace Biblioteca.Models
             using(BibliotecaContext bc = new BibliotecaContext())
             {
                 return bc.Emprestimos.Find(id);
+            }
+        }
+
+        public int CountEmprestimos()
+        {
+            using(BibliotecaContext bc = new BibliotecaContext())
+            {
+                return bc.Emprestimos.Count();
             }
         }
     }

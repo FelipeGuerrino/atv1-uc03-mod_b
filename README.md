@@ -8,4 +8,4 @@ Commit inicial -> "problemas registrados no mantis"
 
 ## Atividade 2
 
-Em desenvolvimento...
+Criação da branch atv2-melhorias -> merge para a branch main

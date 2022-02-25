@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Security.Cryptography;
 using System.Text;
+using System;
 
 namespace Biblioteca.Models
 {
@@ -14,6 +15,11 @@ namespace Biblioteca.Models
             {
                 bc.Usuarios.Add(u);
 
+                using(MD5 md5Hash = MD5.Create())
+                {
+                    string hash = Criptografia.Encriptar(md5Hash, u.Senha);
+                    u.Senha = hash;
+                }
 
                 bc.SaveChanges();
             }
@@ -24,6 +30,13 @@ namespace Biblioteca.Models
             using(BibliotecaContext bc = new BibliotecaContext())
             {
                 Usuario user = bc.Usuarios.Find(u.Id);
+
+                using(MD5 md5Hash = MD5.Create())
+                {
+                    string hash = Criptografia.Encriptar(md5Hash, u.Senha);
+                    u.Senha = hash;
+                }
+
                 user.Nome = u.Nome;
                 user.Senha = u.Senha;
                 
@@ -36,9 +49,7 @@ namespace Biblioteca.Models
             using(BibliotecaContext bc = new BibliotecaContext())
             {
                 IQueryable<Usuario> query;
-
                 query = bc.Usuarios;
-
                 return query.OrderBy(u => u.Nome).ToList();
             }
         }
@@ -55,22 +66,12 @@ namespace Biblioteca.Models
         {
             using(BibliotecaContext bc = new BibliotecaContext())
             {
+                if(!bc.Usuarios.Any())
+                {
+                    Inserir(new Usuario("admin", "123"));
+                }
                 return bc.Usuarios.FirstOrDefault(u => u.Nome == nome && u.Senha == senha);
             }
-        }
-
-        public string Encriptar(MD5 md5Hash, string senha)
-        {
-            byte[] dado = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(senha));
-
-            StringBuilder sBuilder = new StringBuilder();
-
-            for (int i = 0; i < dado.Length; i++)
-            {
-                sBuilder.Append(dado[i].ToString("x2"));
-            }
-
-            return sBuilder.ToString();
         }
     }
 }

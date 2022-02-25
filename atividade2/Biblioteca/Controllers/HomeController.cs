@@ -34,33 +34,14 @@ namespace Biblioteca.Controllers
         [HttpPost]
         public IActionResult Login(string login, string senha)
         //TODO: diferenciar sessão de admin para outros usuários
-        {
-            UsuarioService us = new UsuarioService();
-
-            using (MD5 md5Hash = MD5.Create())
-                {
-                    string hash = us.Encriptar(md5Hash, senha);
-                    senha = hash;
-                }
-            if(login != null && senha != null)
+        {                
+            if(Autenticacao.AutenticaUsuario(login, senha, this))
             {
-                Usuario u =  new Usuario();
-                u = us.ObterUsuario(login, senha);
-                                
-                if(u != null)
-                {
-                    HttpContext.Session.SetString("user", login);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ViewData["Erro"] = "Senha inválida";
-                    return View();
-                }
+                return RedirectToAction("Index");
             }
             else
             {
-                ViewData["Erro"] = "Preencha todos os campos";
+                ViewData["Erro"] = "Senha inválida";
                 return View();
             }
         }

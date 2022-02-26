@@ -10,6 +10,14 @@
             <label asp-for="Senha">Senha</label>
             <input type="password" asp-for="Senha" class="form-control"/>
         </div>
+        <div class="form-group">
+            <label asp-for="Tipo">
+                <select asp-for="Tipo" class="form-control">
+                    <option value="@Usuario.ADMIN">Admin</option>
+                    <option value="@Usuario.PADRAO">Padrão</option>
+                </select>
+            </label>
+        </div>
         <input type="submit" value="Salvar" class="btn btn-primary"/>
     </form>
 </div>

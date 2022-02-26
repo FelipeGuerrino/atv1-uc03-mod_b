@@ -7,8 +7,14 @@ namespace Biblioteca.Controllers
     {
         public IActionResult Cadastro()
         {
-            Autenticacao.CheckLogin(this);
-            return View();
+            if(Autenticacao.IsAdmin(this))
+            {
+                return View();
+            }
+            else
+            {
+                return Redirect("~/Home/Index");
+            }
         }
 
         [HttpPost]
@@ -30,18 +36,44 @@ namespace Biblioteca.Controllers
 
         public IActionResult Listagem()
         {
-            Autenticacao.CheckLogin(this);
+            if(Autenticacao.IsAdmin(this))
+            {
+                UsuarioService usuarioService = new UsuarioService();
+                return View(usuarioService.Listar());
+            }
+            else
+            {
+                return Redirect("~/Home/Index");
+            }
 
-            UsuarioService usuarioService = new UsuarioService();
-            return View(usuarioService.Listar());
         }
 
         public IActionResult Edicao(int id)
         {
-            Autenticacao.CheckLogin(this);
-            UsuarioService us = new UsuarioService();
-            Usuario u = us.ObterPorId(id);
-            return View(u);
+            if(Autenticacao.IsAdmin(this))
+            {
+                UsuarioService us = new UsuarioService();
+                Usuario u = us.ObterPorId(id);
+                return View(u);
+            }
+            else
+            {
+                return Redirect("~/Home/Index");
+            }
+        }
+
+        public IActionResult Excluir(int id)
+        {
+            if(Autenticacao.IsAdmin(this))
+            {
+                UsuarioService us = new UsuarioService();
+                us.Excluir(id);
+                return Redirect("Usuario/Listagem");   
+            }
+            else
+            {
+                return Redirect("~/Home/Index");
+            }
         }
     }
 }

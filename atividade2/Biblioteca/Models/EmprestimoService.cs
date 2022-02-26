@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.Models
 {
     public class EmprestimoService 
     {
+        [ViewData]
+        public static string Enfase {get; set;}
         public void Inserir(Emprestimo e)
         {
             using(BibliotecaContext bc = new BibliotecaContext())
@@ -52,6 +56,19 @@ namespace Biblioteca.Models
             using(BibliotecaContext bc = new BibliotecaContext())
             {
                 return bc.Emprestimos.Count();
+            }
+        }
+
+        public static void ChecarAtraso(int id)
+        {
+            Enfase = "";
+            using(BibliotecaContext bc = new BibliotecaContext())
+            {
+                var query = bc.Emprestimos.Find(id);
+                if (DateTime.Now.CompareTo(query.DataDevolucao) > 0)
+                {
+                    Enfase = "text-danger";
+                }
             }
         }
     }

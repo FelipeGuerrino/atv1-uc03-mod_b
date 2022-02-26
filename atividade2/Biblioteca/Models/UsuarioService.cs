@@ -15,11 +15,8 @@ namespace Biblioteca.Models
             {
                 bc.Usuarios.Add(u);
 
-                using(MD5 md5Hash = MD5.Create())
-                {
-                    string hash = Criptografia.Encriptar(md5Hash, u.Senha);
-                    u.Senha = hash;
-                }
+                string hash = Criptografia.Encriptar(u.Senha);
+                u.Senha = hash;
 
                 bc.SaveChanges();
             }
@@ -31,19 +28,25 @@ namespace Biblioteca.Models
             {
                 Usuario user = bc.Usuarios.Find(u.Id);
 
-                using(MD5 md5Hash = MD5.Create())
+                if(u.Senha != null)
                 {
-                    string hash = Criptografia.Encriptar(md5Hash, u.Senha);
-                    u.Senha = hash;
+                    string hash = Criptografia.Encriptar(u.Senha);
+                    user.Senha = hash;
                 }
-
                 user.Nome = u.Nome;
-                user.Senha = u.Senha;
-                
+                user.Tipo = u.Tipo;
                 bc.SaveChanges();
             }
         }
 
+        public void Excluir(int id)
+        {
+            using(BibliotecaContext bc = new BibliotecaContext())
+            {
+                bc.Remove(bc.Usuarios.Find(id));
+                bc.SaveChanges();
+            }
+        }
         public ICollection<Usuario> Listar()
         {
             using(BibliotecaContext bc = new BibliotecaContext())
@@ -53,6 +56,7 @@ namespace Biblioteca.Models
                 return query.OrderBy(u => u.Nome).ToList();
             }
         }
+
 
         public Usuario ObterPorId(int id)
         {
@@ -68,7 +72,7 @@ namespace Biblioteca.Models
             {
                 if(!bc.Usuarios.Any())
                 {
-                    Inserir(new Usuario("admin", "123"));
+                    Inserir(new Usuario("admin", "123", 0));
                 }
                 return bc.Usuarios.FirstOrDefault(u => u.Nome == nome && u.Senha == senha);
             }

@@ -46,6 +46,12 @@ namespace Biblioteca.Controllers
             }
         }
 
+         public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Privacy()
         {
             return View();

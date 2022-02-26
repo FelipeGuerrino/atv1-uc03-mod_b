@@ -9,7 +9,7 @@
             <thead>
                 <tr><th>Id</th>
                 <th>Nome</th>
-                <th>Senha</th>
+                <th>Tipo</th>
                 <th></th>
                 </tr>
             </thead>
@@ -19,11 +19,14 @@
                 <tr>
                     <td>@u.Id</td>
                     <td>@u.Nome</td>
-                    <td>@u.Senha</td>
-                    <td><a href="/Usuario/Edicao/@u.Id">Editar</a></td>
+                    <td id="tipo">@u.Tipo</td>
+                    <td><a href="/Usuario/Edicao/@u.Id">Editar |</a>
+                        <a href="/Usuario/Excluir/@u.Id">Excluir</a></td>
                 </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+<p>0 = Admin | 1 = Padrão</p>

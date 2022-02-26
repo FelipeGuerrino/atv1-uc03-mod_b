@@ -15,21 +15,31 @@ namespace Biblioteca.Controllers
             }
         }
 
+        public static bool IsAdmin(Controller controller)
+        {
+            if(controller.HttpContext.Session.GetInt32("tipo") == Usuario.ADMIN)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static bool AutenticaUsuario(string nome, string senha, Controller controller)
         {   
             UsuarioService us = new UsuarioService();
             Usuario u = new Usuario();
 
-            using(MD5 md5Hash = MD5.Create())
-            {
-                string hash = Criptografia.Encriptar(md5Hash, senha);
-                senha = hash;
-            }
+            string hash = Criptografia.Encriptar(senha);
+            senha = hash;
 
             u = us.ObterUsuario(nome, senha);
             if(u != null)
             {
-                controller.HttpContext.Session.SetString("user", nome);
+                controller.HttpContext.Session.SetString("user", u.Nome);
+                controller.HttpContext.Session.SetInt32("tipo", u.Tipo);
                 return true;
             }
             else

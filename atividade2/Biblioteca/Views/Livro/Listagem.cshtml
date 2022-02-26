@@ -34,15 +34,25 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(Livro l in Model)
+                @{
+                LivroService ls = new LivroService();
+                if(ls.CountLivros() == 0)
                 {
-                <tr>
-                    <td>@l.Id</td>
-                    <td>@l.Titulo</td>
-                    <td>@l.Autor</td>
-                    <td>@l.Ano</td>
-                    <td><a href="/Livro/Edicao/@l.Id">Editar</a></td>
-                </tr>
+                    <p class="text-danger">Nenhum registro encontrado</p>
+                }
+                else
+                {
+                    foreach(Livro l in Model)
+                    {
+                    <tr>
+                        <td>@l.Id</td>
+                        <td>@l.Titulo</td>
+                        <td>@l.Autor</td>
+                        <td>@l.Ano</td>
+                        <td><a href="/Livro/Edicao/@l.Id">Editar</a></td>
+                    </tr>
+                    }
+                }
                 }
             </tbody>
         </table>
